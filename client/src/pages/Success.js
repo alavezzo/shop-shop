@@ -13,12 +13,8 @@ function Success() {
 
     async function saveOrder () {
         const cart = await idbPromise('cart', 'get')  
-        const products = []
-        cart.forEach((product) => {
-            for (let i=0; i<product.purchaseQuantity; i++) {
-                products.push(product._id)
-            }
-        })
+        const products = cart.map(product => product._id)
+        
         if (products.length) {
             const { data } = await addOrder({ variables: { products: products }, });
             const productData = data.addOrder.products;
